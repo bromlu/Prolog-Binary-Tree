@@ -79,25 +79,63 @@ tree3(
 
 % Additional test data
 tree4(tree(1,tree(2, tree(4, void, void), tree(5, void, void)),tree(3, void, void))).
+tree5(
+        tree(   5,
+                tree(   2,
+                        tree(1,void,void),
+                        tree(   4,
+                                tree(3,void,void),
+                                void
+                        )
+                ),
+                tree(7,void,void)
+        )
+).
+tree6(tree(1,tree(2, tree(2, void, void), tree(5, void, void)),tree(2, void, void))).
 
 % inorder
-inorder(tree(X,L,R),Xs) :- inorder(L,Ls), inorder(R,Rs),
-                            append([X|Ls],Rs,Xs).
-inorder(void,[]).
 
+inorder(void, []).
+inorder(tree(X,L,R),Xs) :- 
+        inorder(L,Ls), 
+        inorder(R,Rs),
+        append(Ls,[X|Rs],Xs).
+                            
 % search
-
+search(X,tree(X,_,_)).
+search(X,tree(_,L,_)) :- search(X,L).
+search(X,tree(_,_,R)) :- search(X,R).
 
 % subtree
-
+subtree(void, _).
+subtree(X, X).
+subtree(X, tree(_,L,_)) :- subtree(X, L).
+subtree(X, tree(_,_,R)) :- subtree(X, R).
 
 % sumtree
-
+sumtree(void, 0).
+sumtree(tree(X,L,R), Sum) :- 
+        sumtree(L, Leftsum), 
+        sumtree(R, Rightsum), 
+        Sum is X + Leftsum + Rightsum.
 
 % ordered
+bigger(_, void).
+bigger(X, tree(H,L,R)) :- X > H, bigger(X, L), bigger(X, R).
 
+smaller(_, void).
+smaller(X, tree(H,L,R)) :- X < H, smaller(X, L), smaller(X, R).
+
+ordered(void).
+ordered(tree(H,L,R)) :- bigger(H, L), smaller(H, R), ordered(L), ordered(R).
 
 % substitute
-
+substitute(_, _, void, void).
+substitute(X, Y, tree(X, L, R), tree(Y, L1, R1)) :- 
+        substitute(X, Y, L, L1),
+        substitute(X, Y, R, R1).
+substitute(X, Y, tree(H, L, R), tree(H, L1, R1)) :- 
+        substitute(X, Y, L, L1),
+        substitute(X, Y, R, R1).
 
 
