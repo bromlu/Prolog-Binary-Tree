@@ -107,10 +107,11 @@ search(X,tree(_,L,_)) :- search(X,L).
 search(X,tree(_,_,R)) :- search(X,R).
 
 % subtree
-subtree(void, _).
 subtree(X, X).
-subtree(X, tree(_,L,_)) :- subtree(X, L).
-subtree(X, tree(_,_,R)) :- subtree(X, R).
+subtree(X, tree(_,L,R)) :- 
+        subtree(X, L) 
+        ; 
+        subtree(X, R).
 
 % sumtree
 sumtree(void, 0).
