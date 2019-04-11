@@ -138,4 +138,12 @@ substitute(X, Y, tree(H, L, R), tree(H, L1, R1)) :-
         substitute(X, Y, L, L1),
         substitute(X, Y, R, R1).
 
+% binsearch
+binsearch(tree(H, L, R), Key) :- 
+        writeln(H), Key == H ;
+        ( 
+                bigger(Key, L) -> binsearch(R, Key) 
+                ; binsearch(L, Key) 
+        ).
+
 
