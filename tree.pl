@@ -140,10 +140,26 @@ substitute(X, Y, tree(H, L, R), tree(H, L1, R1)) :-
 
 % binsearch
 binsearch(tree(H, L, R), Key) :- 
-        writeln(H), Key == H ;
+        write(H), nl, Key == H ;
         ( 
                 bigger(Key, L) -> binsearch(R, Key) 
                 ; binsearch(L, Key) 
         ).
+
+% prettyprint
+prettyprint(T) :- prettyprint(T, "").
+prettyprint(void, Tabs) :- 
+        string_concat(Tabs, "   ", NewTabs),
+        write(NewTabs),
+        write("X"), 
+        nl.
+prettyprint(tree(H, L, R), Tabs) :-  
+        string_concat(Tabs, "   ", NewTabs),
+        prettyprint(R, NewTabs),
+        write(Tabs), 
+        write(H), 
+        nl,
+        prettyprint(L, NewTabs).
+
 
 
